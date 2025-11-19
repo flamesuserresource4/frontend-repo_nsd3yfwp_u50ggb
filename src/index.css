@@ -18,7 +18,8 @@
   }
 
   body {
-    @apply antialiased;
+    @apply antialiased text-slate-100;
+    background-color: #0D0D0D; /* Primary dark theme */
   }
 }
 
@@ -44,18 +45,18 @@
     --tw-exit-translate-y: initial;
   }
 
-  /* Subtle grid background */
+  /* Subtle grid background tuned for dark */
   .bg-grid {
-    background-image: linear-gradient(to right, rgba(2,6,23,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(2,6,23,0.06) 1px, transparent 1px);
+    background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
     background-size: 24px 24px;
   }
 
   /* Glass effect helpers */
   .glass {
-    @apply bg-white/60 backdrop-blur-md border border-white/60 shadow-[0_8px_30px_rgba(15,23,42,0.06)];
+    @apply bg-white/10 backdrop-blur-md border border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.25)] text-slate-100;
   }
   .glass-dark {
-    @apply bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.3)] text-white;
+    @apply bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.35)] text-white;
   }
 
   /* Marquee */

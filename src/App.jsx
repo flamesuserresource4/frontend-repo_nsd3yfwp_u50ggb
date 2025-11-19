@@ -12,7 +12,7 @@ import ScrollBackground from './components/ScrollBackground'
 
 function App() {
   return (
-    <div className="min-h-screen text-slate-900 antialiased scroll-smooth relative overflow-x-clip">
+    <div className="min-h-screen text-slate-100 antialiased scroll-smooth relative overflow-x-clip">
       {/* Scroll‑reactive background */}
       <ScrollBackground />
 

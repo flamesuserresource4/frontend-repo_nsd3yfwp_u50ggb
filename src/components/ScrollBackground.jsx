@@ -1,17 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 /*
- Scroll-reactive background
- - Conic gradient halo rotates with scroll
- - Two gradient blobs with parallax + scale
- - Grid texture shifts subtly
+ Scroll-reactive background (dark themed)
+ - Conic gradient halo rotates with scroll, hues adapted to #0D0D0D
+ - Two gradient blobs with parallax + scale, reduced brightness for dark base
+ - Grid texture shifts subtly and is tuned for dark
  - Vignette for readability
  - Section-aware hue shifting (e.g., pink on portfolio, emerald on contact)
 */
 export default function ScrollBackground() {
   const [progress, setProgress] = useState(0)
-  const [currentHue, setCurrentHue] = useState(220) // base blue-ish
-  const targetHueRef = useRef(220)
+  const [currentHue, setCurrentHue] = useState(200) // cooler base for dark
+  const targetHueRef = useRef(200)
   const rafRef = useRef(0)
 
   // Scroll progress 0..1
@@ -35,15 +35,15 @@ export default function ScrollBackground() {
   useEffect(() => {
     const idToHue = (id) => {
       switch (id) {
-        case 'portfolio': return 330 // pink
+        case 'portfolio': return 330 // pink accent
         case 'contact': return 160 // emerald
         case 'services': return 210 // blue
-        case 'pricing': return 50 // amber
+        case 'pricing': return 48 // amber
         case 'testimonials': return 260 // violet
-        case 'about': return 200 // cyan-blue
-        case 'process': return 190 // teal
-        case 'hero': return 220
-        default: return 220
+        case 'about': return 195 // cyan-teal
+        case 'process': return 185 // teal
+        case 'hero': return 200
+        default: return 200
       }
     }
 
@@ -51,7 +51,6 @@ export default function ScrollBackground() {
     if (sections.length === 0) return
 
     const observer = new IntersectionObserver((entries) => {
-      // pick the most visible entry
       let best = null
       let bestRatio = 0
       for (const e of entries) {
@@ -66,7 +65,6 @@ export default function ScrollBackground() {
       }
     }, {
       root: null,
-      // favor center of viewport
       rootMargin: '-30% 0px -30% 0px',
       threshold: [0, 0.25, 0.5, 0.75, 1]
     })
@@ -80,9 +78,8 @@ export default function ScrollBackground() {
     const ease = () => {
       const current = currentHue
       const target = targetHueRef.current
-      // shortest hue distance around the circle
       let delta = ((target - current + 540) % 360) - 180
-      const next = current + delta * 0.06 // easing factor
+      const next = current + delta * 0.06
       setCurrentHue(next)
       rafRef.current = requestAnimationFrame(ease)
     }
@@ -93,38 +90,41 @@ export default function ScrollBackground() {
   // Derived transforms
   const t = useMemo(() => {
     const rotate = progress * 360
-    const shiftX = (progress * 60) - 30 // -30 .. 30px
+    const shiftX = (progress * 60) - 30
     const shiftY = Math.sin(progress * Math.PI * 2) * 28
     const scaleA = 1 + progress * 0.12
     const scaleB = 1 + (1 - progress) * 0.1
-    const hue = (currentHue + progress * 8) % 360 // small extra motion
+    const hue = (currentHue + progress * 8) % 360
     return { rotate, shiftX, shiftY, scaleA, scaleB, hue }
   }, [progress, currentHue])
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0">
-      {/* Conic gradient halo (rotates + hue) */}
+      {/* Base dark backdrop to guarantee #0D0D0D even when elements shift */}
+      <div className="absolute inset-0" style={{ background: '#0D0D0D' }} />
+
+      {/* Conic gradient halo (rotates + hue), lowered brightness for dark harmony */}
       <div
-        className="absolute inset-[-20%] opacity-[0.32]"
+        className="absolute inset-[-20%] opacity-[0.24] mix-blend-screen"
         style={{
-          background: `conic-gradient(from ${t.rotate}deg at 50% 45%, hsla(${t.hue},90%,60%,0.30), hsla(${(t.hue+80)%360},90%,62%,0.30), hsla(${(t.hue+160)%360},80%,55%,0.28), hsla(${(t.hue+240)%360},85%,62%,0.30), hsla(${t.hue},90%,60%,0.30))`,
-          filter: `saturate(1.1)`
+          background: `conic-gradient(from ${t.rotate}deg at 50% 45%, hsla(${t.hue},85%,58%,0.18), hsla(${(t.hue+80)%360},85%,60%,0.18), hsla(${(t.hue+160)%360},80%,55%,0.16), hsla(${(t.hue+240)%360},80%,58%,0.18), hsla(${t.hue},85%,58%,0.18))`,
+          filter: `saturate(1.05)`
         }}
       />
 
-      {/* Gradient blobs (parallax + subtle scale) */}
+      {/* Gradient blobs (parallax + subtle scale) tuned for dark */}
       <div
         className="absolute -top-56 -left-44 h-[46rem] w-[46rem] rounded-full blur-3xl"
         style={{
-          background: `radial-gradient(closest-side, hsla(${(t.hue+220)%360},95%,70%,0.55), rgba(0,0,0,0) 70%)`,
+          background: `radial-gradient(closest-side, hsla(${(t.hue+210)%360},95%,65%,0.35), rgba(0,0,0,0) 70%)`,
           transform: `translate3d(${t.shiftX}px, ${t.shiftY}px, 0) scale(${t.scaleA})`,
-          filter: `saturate(1.05)`
+          filter: `saturate(1.0)`
         }}
       />
       <div
         className="absolute -bottom-60 -right-56 h-[44rem] w-[44rem] rounded-full blur-[80px]"
         style={{
-          background: `radial-gradient(closest-side, hsla(${(t.hue+20)%360},95%,68%,0.50), rgba(0,0,0,0) 70%)`,
+          background: `radial-gradient(closest-side, hsla(${(t.hue+20)%360},95%,62%,0.32), rgba(0,0,0,0) 70%)`,
           transform: `translate3d(${-t.shiftX * 0.85}px, ${-t.shiftY * 0.65}px, 0) scale(${t.scaleB})`
         }}
       />
@@ -134,13 +134,13 @@ export default function ScrollBackground() {
         className="absolute inset-0 bg-grid"
         style={{
           transform: `translate(${t.shiftX * 0.6}px, ${t.shiftY * 0.5}px)`,
-          opacity: 0.26
+          opacity: 0.18
         }}
       />
 
       {/* Soft radial vignette for readability */}
       <div className="absolute inset-0" style={{
-        background: 'radial-gradient(80% 55% at 50% 10%, rgba(2,6,23,0.08), rgba(2,6,23,0.0) 60%, rgba(2,6,23,0.10))'
+        background: 'radial-gradient(80% 55% at 50% 10%, rgba(13,13,13,0.05), rgba(13,13,13,0.0) 60%, rgba(13,13,13,0.35))'
       }} />
     </div>
   )
