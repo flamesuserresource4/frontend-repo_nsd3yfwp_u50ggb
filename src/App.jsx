@@ -12,22 +12,25 @@ import ScrollBackground from './components/ScrollBackground'
 
 function App() {
   return (
-    <div className="min-h-screen bg-white text-slate-900 antialiased scroll-smooth relative overflow-x-clip">
+    <div className="min-h-screen text-slate-900 antialiased scroll-smooth relative overflow-x-clip">
       {/* Scroll‑reactive background */}
       <ScrollBackground />
 
-      <Header />
-      <main>
-        <Hero />
-        <About />
-        <Services />
-        <Portfolio />
-        <Process />
-        <Pricing />
-        <Testimonials />
-        <Contact />
-      </main>
-      <Footer />
+      {/* Foreground content */}
+      <div className="relative z-10">
+        <Header />
+        <main>
+          <Hero />
+          <About />
+          <Services />
+          <Portfolio />
+          <Process />
+          <Pricing />
+          <Testimonials />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
     </div>
   )
 }
