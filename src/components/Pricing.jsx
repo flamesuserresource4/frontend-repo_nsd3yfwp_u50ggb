@@ -11,10 +11,10 @@ export default function Pricing() {
         <h2 className="text-3xl sm:text-4xl font-bold">Тарифы</h2>
         <div className="mt-10 grid md:grid-cols-3 gap-6">
           {plans.map((p) => (
-            <div key={p.name} className={`relative rounded-xl border p-6 ${p.featured ? 'bg-black text-white border-black shadow-[0_10px_30px_rgba(15,23,42,0.12)]' : 'bg-white border-slate-200'}`}>
-              {p.featured && <div className="absolute -top-3 right-4 rounded-full bg-black text-[10px] px-2 py-1 text-white">Рекомендуем</div>}
-              <div className="text-slate-600 text-sm {p.featured ? 'text-white/80' : ''}">{p.name}</div>
-              <div className={`mt-2 text-4xl font-extrabold ${p.featured ? 'text-white' : ''}`}>{p.price}</div>
+            <div key={p.name} className={`relative rounded-2xl p-6 ${p.featured ? 'glass-dark' : 'glass'}`}>
+              {p.featured && <div className="absolute -top-3 right-4 rounded-full bg-white/90 text-[10px] px-2 py-1 text-slate-900 backdrop-blur">Рекомендуем</div>}
+              <div className={`text-sm ${p.featured ? 'text-white/80' : 'text-slate-700'}`}>{p.name}</div>
+              <div className={`mt-2 text-4xl font-extrabold ${p.featured ? 'text-white' : 'text-slate-900'}`}>{p.price}</div>
               <div className={`text-sm ${p.featured ? 'text-white/80' : 'text-slate-600'}`}>Срок: {p.time}</div>
               <ul className="mt-4 space-y-2">
                 {p.features.map((f) => (
