@@ -11,11 +11,10 @@ import Footer from './components/Footer'
 
 function App() {
   return (
-    <div className="min-h-screen bg-slate-950 text-white scroll-smooth">
-      {/* layered background accents */}
-      <div className="pointer-events-none fixed inset-0 -z-0">
-        <div className="absolute -top-40 -right-40 w-[60vw] aspect-square rounded-full bg-cyan-500/20 blur-[140px]" />
-        <div className="absolute top-1/3 -left-40 w-[50vw] aspect-square rounded-full bg-blue-600/20 blur-[140px]" />
+    <div className="min-h-screen bg-white text-slate-900 antialiased scroll-smooth">
+      {/* subtle page background */}
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-[radial-gradient(80%_50%_at_50%_-10%,rgba(15,23,42,0.04),transparent)]" />
       </div>
 
       <Header />
